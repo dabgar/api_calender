@@ -1,5 +1,5 @@
 const secrets = {
-  dbUri: process.env.DB_URI ||  'mongodb://test:test@ds213338.mlab.com:13338/heroku_b7btth5q/test',
+  dbUri: process.env.DB_URI ||  'mongodb://heroku_b7btth5q:5pe2mhl4ltobdl4mqahut27v3d@ds213338.mlab.com:13338/heroku_b7btth5q',
 };
 
 const getSecret = (key) => secrets[key];
