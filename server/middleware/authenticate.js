@@ -3,7 +3,8 @@ const Session = require('../models/session');
 const authenticate = async (req, res, next) => {
   try {
     // get the session token from the request cookies
-    const { token } = req.cookies;
+    const { token }
+    // = req.cookies;
     if (!token || typeof token !== 'string') {
       // if the token is not a string, we know the session token was not set by the server and is therefore invalid
       throw new Error('Request cookie is invalid.');
@@ -13,7 +14,7 @@ const authenticate = async (req, res, next) => {
     if (!session) {
       // if the a session is not found with the provided token, clear the cookie
       // e.g. user session expired on server, but the browser still has the cookie
-      res.clearCookie('token');
+      //res.clearCookie('token');
       throw new Error('Your session has expired. You need to log in.');
     }
     // set the session retrieved from db on the request object
