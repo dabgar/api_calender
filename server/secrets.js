@@ -1,5 +1,5 @@
 const secrets = {
-  dbUri: process.env.DB_URI ||  'mongodb://root:root@ds213338.mlab.com:13338/heroku_b7btth5q',
+  dbUri: process.env.DB_URI ||  'mongodb://test:test@ds213338.mlab.com:13338/heroku_b7btth5q/test',
 };
 
 const getSecret = (key) => secrets[key];
@@ -12,6 +12,7 @@ mongoose
   .connect(
     getSecret('dbUri'),
     { useNewUrlParser: true
+    }
   )
   .then(
     () => {

@@ -10,7 +10,7 @@ dotenv.config({ silent: true });
 mongoose.Promise = global.Promise;
 mongoose
   .connect(
-    'mongodb://root:root@ds213338.mlab.com:13338/heroku_b7btth5q',
+    'mongodb://test:test@ds213338.mlab.com:13338/heroku_b7btth5q/test',
     { useNewUrlParser: true
 	})
   .then(
