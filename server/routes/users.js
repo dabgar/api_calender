@@ -34,8 +34,8 @@ router.post('/register', async (req, res) => {
 
     res
       .cookie('token', session.token, {
-        httpOnly: false,
-        sameSite: false,
+        httpOnly: true,
+        sameSite: true,
         maxAge: 1209600000, // 2 weeks
         secure: process.env.NODE_ENV === 'production', // will only be set to true in production
       })
@@ -97,8 +97,8 @@ router.post('/login', async (req, res) => {
     // same options as before!
     res
       .cookie('token', session.token, {
-        httpOnly: false,
-        sameSite: false,
+        httpOnly: true,
+        sameSite: true,
         maxAge: 1209600000,
         secure: process.env.NODE_ENV === 'production',
       })
