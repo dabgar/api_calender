@@ -1,6 +1,7 @@
 const User = require('../models/user');
 const express = require('express');
 const router = express.Router();
+
 function isIsoDate(str) {
   console.log(str,"-----input")
   if (!/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z/.test(str)) return false;
@@ -98,7 +99,7 @@ router.post('/bookSlot', async (req, res) => {
   try {
     const { startTime, status, book, email } = req.body;
     const slot = await User.findOne({ email: req.body.email, 'slotValue.slot': req.body.startTime, 'slotValue.status': req.body.status })
-      //       const slot = await User.findOne({email:req.body.email,slotValue:[{slot:req.body.startTime + "-" + req.body.endTime,status:req.body.status}]})
+      //const slot = await User.findOne({email:req.body.email,slotValue:[{slot:req.body.startTime + "-" + req.body.endTime,status:req.body.status}]})
       //const slot = await User.findOne({email:req.body.email})
       .then((docs) => {
         if (docs) {
