@@ -7,3 +7,6 @@ npm i
 
 #start the service 
 npm start
+
+#initial step
+Registration
