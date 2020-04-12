@@ -1,19 +1,32 @@
 const User = require('../models/user');
 const express = require('express');
 const router = express.Router();
-
+function isIsoDate(str) {
+  console.log(str,"-----input")
+  if (!/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z/.test(str)) return false;
+  var d = new Date(str); 
+  console.log(str,"-----input")
+  console.log(d.toISOString(),"-----output")
+  
+  return d.toISOString()===str;
+}
 router.post('/makeSlotAvailable', async (req, res) => {
   try {
     var condition = '';
     var bool = false;
+    var errorNum = 200;
     var doc;
-    const { startTime, endTime, status, email } = req.body;
-    const slot = await User.findOne({ email: req.body.email })
+    const { startTime, status, email } = req.body;
+    var date=isIsoDate(req.body.startTime);
+    if(!date){
+      condition = "Wrong date format";
+      errorNum = 403;
+    }else{
+      const slot = await User.findOne({ email: req.body.email })
       .then((docs) => {
         if (docs) {
           doc = docs
           bool = true;
-          //      console.log({"success":true,data:docs});
           //      console.log(docs.slotValue);
           //      var jsonForm= {slotValue:docs.slotValue};
           //      var obj=JSON.parse(jsonForm)
@@ -38,7 +51,7 @@ router.post('/makeSlotAvailable', async (req, res) => {
       })
     var slotPos = -1;
     if (bool) {
-      var Value = req.body.startTime + "-" + req.body.endTime;
+      var Value = req.body.startTime;
       var stat = req.body.status
       for (i in doc.slotValue) {
         if (doc.slotValue[i].slot === Value) {
@@ -60,8 +73,9 @@ router.post('/makeSlotAvailable', async (req, res) => {
       } else {
 
         condition = "Slot already exists";
-      }
+      }      
     }
+  }
   } catch (error) {
 
     res.status(401)
@@ -71,9 +85,9 @@ router.post('/makeSlotAvailable', async (req, res) => {
       });
 
   }
-  res.status(200).json({
+  res.status(errorNum).json({
     title: condition,
-    slotValue: req.body.startTime + "-" + req.body.endTime,
+    slotValue: req.body.startTime,
     status: req.body.status
   });
 });
@@ -82,8 +96,8 @@ router.post('/bookSlot', async (req, res) => {
   var condition = '';
   var bool = false;
   try {
-    const { startTime, endTime, status, book, email } = req.body;
-    const slot = await User.findOne({ email: req.body.email, 'slotValue.slot': req.body.startTime + "-" + req.body.endTime, 'slotValue.status': req.body.status })
+    const { startTime, status, book, email } = req.body;
+    const slot = await User.findOne({ email: req.body.email, 'slotValue.slot': req.body.startTime, 'slotValue.status': req.body.status })
       //       const slot = await User.findOne({email:req.body.email,slotValue:[{slot:req.body.startTime + "-" + req.body.endTime,status:req.body.status}]})
       //const slot = await User.findOne({email:req.body.email})
       .then((docs) => {
@@ -106,7 +120,7 @@ router.post('/bookSlot', async (req, res) => {
       })
     var slotPos = -1;
     if (bool) {
-      var Value = req.body.startTime + "-" + req.body.endTime;
+      var Value = req.body.startTime;
       // var stat=req.body.book            
       for (i in doc.slotValue) {
         if (doc.slotValue[i].slot === Value) {
@@ -121,7 +135,7 @@ router.post('/bookSlot', async (req, res) => {
         } else {
           var newslot = { $set: { "slotValue.$.book": req.body.book } }
           console.log(JSON.stringify(newslot), "book")
-          const second = await User.findOneAndUpdate({ email: req.body.email, 'slotValue.slot': req.body.startTime + "-" + req.body.endTime }, newslot);
+          const second = await User.findOneAndUpdate({ email: req.body.email, 'slotValue.slot': req.body.startTime }, newslot);
           condition = "Booked";
 
         }
@@ -143,7 +157,7 @@ router.post('/bookSlot', async (req, res) => {
   }
   res.status(200).json({
     title: condition,
-    slotValue: req.body.startTime + "-" + req.body.endTime,
+    slotValue: req.body.startTime,
     book: req.body.book
   });
 });
