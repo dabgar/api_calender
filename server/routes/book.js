@@ -113,7 +113,7 @@ router.post('/bookSlot', async (req, res) => {
           res.status(404)
             .json({
               title: 'Data not found',
-              error: 'bool value false'
+              error: 'No such Email-Id Exists'
             });
           //console.log({email:req.body.email,slotValue: [{slot:req.body.startTime + "-" + req.body.endTime,status:req.body.status}]},"SLot value")
         }
