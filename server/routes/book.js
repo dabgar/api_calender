@@ -45,7 +45,7 @@ router.post('/makeSlotAvailable', async (req, res) => {
           res.status(401)
             .json({
               title: 'Data not found',
-              error: 'bool value false'
+              error: 'No such Email-Id Exists'
             });
           console.log({ "success": false, data: "no such user exist" });
         }
